@@ -1,12 +1,15 @@
-import { Hono } from 'hono'
-import { handle } from 'hono/vercel'
+import { Hono } from "hono";
+import { handle } from "hono/vercel";
+import { userRouters } from "./auth";
+import { appRouters } from "./app";
 
 export const config = {
-  runtime: 'edge',
-}
+  runtime: "edge",
+};
 
-const app = new Hono().basePath('/api')
+const app = new Hono();
 
-app.get('/', (c) => c.json({ message: 'Hello Hono!' }))
+app.route("/v1/user", userRouters());
+app.route("/v1/apps", appRouters());
 
-export default handle(app)
+export default handle(app);
